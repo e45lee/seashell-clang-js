@@ -24,6 +24,7 @@
 
 class SeashellInterpreter_Impl;
 namespace llvm {class LLVMContext;}
+typedef std::basic_string<unsigned char> raw_string;
 
 class SeashellInterpreter {
   SeashellInterpreter_Impl* impl;
@@ -43,7 +44,7 @@ public:
    *  False otherwise, with error through
    *  assemble_error();
    */
-  bool assemble(const std::string& source);
+  bool assemble(const raw_string& source);
   std::string assemble_error() const;
 
   /**

@@ -1,8 +1,17 @@
-FROM trzeci/emscripten:sdk-tag-1.37.19-64bit
+FROM trzeci/emscripten:1.39.3-upstream
 MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
 # Revert back to "/bin/sh" as default shell
 # See https://github.com/asRIA/emscripten-docker/blob/master/Dockerfile.in#L4
-RUN rm /bin/sh && ln -s /bin/dash /bin/sh
+RUN rm /bin/sh && ln -s /bin/dash /bin/sh \
+	&& npm install -g nodeunit \
+	&& apt-get update && apt-get install -y ccache unzip libtinfo5 \
+	&& ln -s `which ccache` /usr/lib/ccache/emcc \
+	&& ln -s `which ccache` /usr/lib/ccache/em++
 
-ENV PATH /emsdk_portable:/emsdk_portable/sdk:/emsdk_portable/node/bin:${PATH}
+RUN cd /tmp \
+	&& wget https://github.com/ninja-build/ninja/releases/download/v1.7.2/ninja-linux.zip \
+	&& unzip ninja-linux.zip \
+	&& cp ninja /usr/local/bin/ninja 
+
+ENV PATH /usr/lib/ccache:/emsdk_portable:/emsdk_portable/sdk:/emsdk_portable/node/bin:${PATH}

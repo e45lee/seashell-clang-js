@@ -48,7 +48,7 @@ static void StringDiagnosticHandler(const llvm::DiagnosticInfo &DI, void *C) {
   DI.print(DP);
 }
 
-bool SeashellInterpreter::assemble(const std::string& source) {
+bool SeashellInterpreter::assemble(const raw_string& source) {
   assemble_error_ = "";
   llvm::raw_string_ostream os(assemble_error_);
   llvm::LLVMContext::DiagnosticHandlerTy OldDiagnosticHandler =
@@ -56,8 +56,9 @@ bool SeashellInterpreter::assemble(const std::string& source) {
   void *OldDiagnosticContext = ctx->getDiagnosticContext();
   ctx->setDiagnosticHandler(StringDiagnosticHandler, &assemble_error_, true);
 
-  //std::unique_ptr<llvm::Module> M = parseAssemblyString(source, Err, *ctx);
-  llvm::ErrorOr<std::unique_ptr<llvm::Module>> ME = llvm::parseBitcodeFile(llvm::MemoryBufferRef(source, "<stdin>"), *ctx);
+  // llvm::SMDiagnostic error;
+  // std::unique_ptr<llvm::Module> M = llvm::parseAssemblyString(source, Err, *ctx);
+  llvm::ErrorOr<std::unique_ptr<llvm::Module>> ME = llvm::parseBitcodeFile(llvm::MemoryBufferRef(llvm::StringRef((char*)source.data(), source.length()), "<stdin>"), *ctx);
 
   if(ME.getError()) {
     ctx->setDiagnosticHandler(OldDiagnosticHandler, OldDiagnosticContext, true);

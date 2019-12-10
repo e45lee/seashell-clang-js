@@ -199,7 +199,7 @@ static void seashell_llvm_setup() {
     InitializeNativeTargetAsmParser();
     InitializeNativeTargetDisassembler();
 
-    PassRegistry *Registry = PassRegistry::getPassRegistry();
+    PassRegistry *Registry = llvm::PassRegistry::getPassRegistry();
     initializeCore(*Registry);
     initializeCodeGen(*Registry);
     initializeLoopStrengthReducePass(*Registry);
@@ -539,8 +539,8 @@ extern "C" const char * seashell_compiler_get_object (struct seashell_compiler* 
     return NULL;
   }
 #else
-std::string seashell_compiler_get_object(struct seashell_compiler* compiler) {
-  return std::string(compiler->output_object.begin(), compiler->output_object.end());
+raw_string seashell_compiler_get_object(struct seashell_compiler* compiler) {
+  return raw_string(compiler->output_object.begin(), compiler->output_object.end());
 #endif
 }
 

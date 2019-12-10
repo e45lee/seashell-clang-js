@@ -24,12 +24,14 @@ struct seashell_compiler;
 
 #ifdef __EMSCRIPTEN__
 #include <string>
+typedef std::basic_string<unsigned char> raw_string;
+
 std::string seashell_clang_version();
 void seashell_compiler_set_main_file(struct seashell_compiler *compiler, std::string file);
 void seashell_compiler_add_source_dir(struct seashell_compiler *compiler, std::string dir);
 void seashell_compiler_add_file(struct seashell_compiler *compiler, std::string file);
 void seashell_compiler_add_compile_flag (struct seashell_compiler* compiler, std::string flag);
-std::string seashell_compiler_get_object(struct seashell_compiler* compiler);
+raw_string seashell_compiler_get_object(struct seashell_compiler* compiler);
 std::string seashell_compiler_get_linker_messages(struct seashell_compiler* compiler);
 std::string seashell_compiler_get_diagnostic_file(struct seashell_compiler* compiler, int k);
 std::string seashell_compiler_get_diagnostic_message(struct seashell_compiler* compiler, int k);

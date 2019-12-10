@@ -20,6 +20,5 @@ fi
 echo "Will use \`${SOURCE_DIRECTORY}' as source, \`${CCACHE_DIRECTORY}' as cache directory, and \`${TRAVIS_DIRECTORY}' as Docker directory"
 
 # Compile to JavaScript
-docker rmi seashell-builder || true
 docker build -t seashell-builder - < ${TRAVIS_DIRECTORY}/../Dockerfile.in
 docker run --rm -it -v $SOURCE_DIRECTORY:/usr/src:rw -v $TRAVIS_DIRECTORY:/travis:ro -v $CCACHE_DIRECTORY:/root/.ccache:rw seashell-builder /travis/compile-inside-docker.sh

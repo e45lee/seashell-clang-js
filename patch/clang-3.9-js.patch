@@ -1,5 +1,5 @@
 diff --git a/include/clang/Basic/LangOptions.h b/include/clang/Basic/LangOptions.h
-index 6ec499f..7444a73 100644
+index 6ec499f1c7..7444a736cc 100644
 --- a/include/clang/Basic/LangOptions.h
 +++ b/include/clang/Basic/LangOptions.h
 @@ -30,7 +30,8 @@ namespace clang {
@@ -23,7 +23,7 @@ index 6ec499f..7444a73 100644
  };
  
 diff --git a/include/clang/Basic/VersionTuple.h b/include/clang/Basic/VersionTuple.h
-index da3b019..866bf02 100644
+index da3b01903e..866bf02c52 100644
 --- a/include/clang/Basic/VersionTuple.h
 +++ b/include/clang/Basic/VersionTuple.h
 @@ -24,18 +24,19 @@ namespace clang {
@@ -54,8 +54,39 @@ index da3b019..866bf02 100644
  
  public:
    VersionTuple()
+diff --git a/lib/CodeGen/CGOpenMPRuntime.cpp b/lib/CodeGen/CGOpenMPRuntime.cpp
+index 6a0edbe0e7..96c281c083 100644
+--- a/lib/CodeGen/CGOpenMPRuntime.cpp
++++ b/lib/CodeGen/CGOpenMPRuntime.cpp
+@@ -6073,7 +6073,7 @@ void CGOpenMPRuntime::emitTargetDataCalls(CodeGenFunction &CGF,
+   // Generate the code for the opening of the data environment. Capture all the
+   // arguments of the runtime call by reference because they are used in the
+   // closing of the region.
+-  auto &&BeginThenGen = [&D, &CGF, &BasePointersArray, &PointersArray,
++  auto &&BeginThenGen = [&D, &BasePointersArray, &PointersArray,
+                          &SizesArray, &MapTypesArray, Device,
+                          &NumOfPtrs](CodeGenFunction &CGF, PrePostActionTy &) {
+     // Fill up the arrays with all the mapped variables.
+@@ -6121,7 +6121,7 @@ void CGOpenMPRuntime::emitTargetDataCalls(CodeGenFunction &CGF,
+   };
+ 
+   // Generate code for the closing of the data region.
+-  auto &&EndThenGen = [&CGF, &BasePointersArray, &PointersArray, &SizesArray,
++  auto &&EndThenGen = [&BasePointersArray, &PointersArray, &SizesArray,
+                        &MapTypesArray, Device,
+                        &NumOfPtrs](CodeGenFunction &CGF, PrePostActionTy &) {
+     assert(BasePointersArray && PointersArray && SizesArray && MapTypesArray &&
+@@ -6188,7 +6188,7 @@ void CGOpenMPRuntime::emitTargetDataStandAloneCall(
+          "Expecting either target enter, exit data, or update directives.");
+ 
+   // Generate the code for the opening of the data environment.
+-  auto &&ThenGen = [&D, &CGF, Device](CodeGenFunction &CGF, PrePostActionTy &) {
++  auto &&ThenGen = [&D, Device](CodeGenFunction &CGF, PrePostActionTy &) {
+     // Fill up the arrays with all the mapped variables.
+     MappableExprsHandler::MapValuesArrayTy BasePointers;
+     MappableExprsHandler::MapValuesArrayTy Pointers;
 diff --git a/lib/CodeGen/TargetInfo.cpp b/lib/CodeGen/TargetInfo.cpp
-index aa67e71..569de74 100644
+index aa67e71284..569de74552 100644
 --- a/lib/CodeGen/TargetInfo.cpp
 +++ b/lib/CodeGen/TargetInfo.cpp
 @@ -701,6 +701,7 @@ ABIArgInfo WebAssemblyABIInfo::classifyReturnType(QualType RetTy) const {
@@ -164,7 +195,7 @@ index aa67e71..569de74 100644
  
    // Get the VAList.
 diff --git a/tools/c-index-test/c-index-test.c b/tools/c-index-test/c-index-test.c
-index 007af9e..fa25f88 100644
+index 007af9e252..fa25f8829f 100644
 --- a/tools/c-index-test/c-index-test.c
 +++ b/tools/c-index-test/c-index-test.c
 @@ -1,5 +1,6 @@
@@ -181,7 +212,7 @@ index 007af9e..fa25f88 100644
  }
 +#endif
 diff --git a/tools/c-index-test/core_main.cpp b/tools/c-index-test/core_main.cpp
-index e64dae7..49b5180 100644
+index e64dae726f..49b5180ad9 100644
 --- a/tools/c-index-test/core_main.cpp
 +++ b/tools/c-index-test/core_main.cpp
 @@ -1,3 +1,4 @@
@@ -195,7 +226,7 @@ index e64dae7..49b5180 100644
  }
 +#endif
 diff --git a/tools/driver/CMakeLists.txt b/tools/driver/CMakeLists.txt
-index e03b3fa..dbd66b6 100644
+index e03b3fa395..dbd66b6396 100644
 --- a/tools/driver/CMakeLists.txt
 +++ b/tools/driver/CMakeLists.txt
 @@ -41,7 +41,7 @@ target_link_libraries(clang
